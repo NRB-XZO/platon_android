@@ -1,25 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # NRB
-from python_imagesearch.imagesearch import imagesearch
 import speech_recognition as sr
 from playsound import playsound
 from gtts import gTTS
 import os
 import random
-import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from email.mime.base import MIMEBase
-from email import encoders
 import time
 import socket
 import sys
 from time import sleep
-import webbrowser
 from datetime import datetime
-import pyautogui
-import cv2
 from bs4 import BeautifulSoup
 import requests
 import re
@@ -55,29 +46,6 @@ def speak(string):
     playsound(file)
     os.remove(file)
 küfür=["Terbiyesiz herif","Boyundan utan","Yanında kimse yok herhalde","Siktir git","Bana diyeceğine kendine bak zaaa"]
-
-def face_scan():
-    yuzCascade = cv2.CascadeClassifier('Cascades/haarcascade_frontalface_default.xml')
-    kamera = cv2.VideoCapture(0)
-    while True:
-        _, kare = kamera.read()
-        # kare = cv2.flip(kare,-1)
-        gri = cv2.cvtColor(kare, cv2.COLOR_BGR2GRAY)
-        yuzler=yuzCascade.detectMultiScale(
-            gri,
-            scaleFactor=1.2,
-            minNeighbors=5,
-            minSize=(20,20)
-        )
-        for (x,y,w,h) in yuzler:
-            cv2.rectangle(kare,(x,y),(x+w,y+h),(255,0,0),2)
-            cv2.imshow('kare',kare)
-            k = cv2.waitKey(1) & 0xff
-            if k == 27 or k == ord('q'):
-                break
-        kamera.release()
-        cv2.destroyAllWindows()
-        speak("Merhaba en ar bi")
 def response(voice):
     if "nasılsın" in voice:
         speak("İyiyim sen nasılsın")
@@ -128,37 +96,6 @@ def response(voice):
             speak("İşletim sistemin windows")
         elif os.name == "posix":
             speak("İşletim sistemin linux")
-    if "mesaj at" in voice:
-        speak("Kime mesaj atmamı istersiniz ?")
-        bfasdjfh = record()
-        speak("{} kişisine mesaj göndereceğim".format(bfasdjfh))
-        speak("Mesajın konusu nedir ?")
-        asdfuy = record()
-        speak("Mesajın konusu {} olarak gönderilecek".format(asdfuy))
-        speak("Mesaj atma işlemini başlatıyorum. Tarayıcı başlatılıyor.")
-        webbrowser.open("https://web.whatsapp.com/",new=0,autoraise=True)
-        speak("Tarayıcı başlatıldı. Tarayıcıyı açma işlemi uzun sürebilir.")
-        sleep(30)
-        if imagesearch(image="karekod.PNG")[0] > 0:
-            speak("Whatsapp webe bağlı değil. Lütfen bağlantıyı sağlayın.")
-        else:
-            sleep(0.5)
-            try:
-                if imagesearch(image="aratin.PNG")[0] > 0:
-                    pyautogui.leftClick(imagesearch(image="aratin.PNG")[0], imagesearch(image="aratin.PNG")[1])
-                    pyautogui.typewrite(bfasdjfh, interval=0.05)
-                    sleep(1)
-                    pyautogui.press("enter")
-                    pyautogui.typewrite(asdfuy, interval=0.05)
-                    pyautogui.press("enter")
-                    speak("Mesajınız gönderildi")
-            except:
-                speak("Mesaj göndermede bir hata oluştu")
-    if "Baba" in voice:
-        webbrowser.open(url="https://www.youtube.com/watch?v=qZJlHCHd0uA",new=0,autoraise=True)
-        speak("Müslüm babadan gel bahtımın kar beyazı açıyorum")
-        sleep(5)
-        pyautogui.leftClick(365,550)
     if "bitcoin" in voice:
         try:
             print("Bitcoin")
@@ -242,12 +179,6 @@ def response(voice):
                 print("Tarih ayarlarında hata oluştu")
                 speak("Hata. Hata. Hata")
         speak("Bugün yılın {} {} ayı, ve ayın {} {} günü".format(an.month,ek(),an.day,ek2()))
-    if "tarayıcı" in voice:
-        webbrowser.open(url="google.com",new=0,autoraise=True)
-        speak("Tarayıcıyı açtım")
-    if "Tarayıcı" in voice:
-        webbrowser.open(url="google.com",new=0,autoraise=True)
-        speak("Tarayıcıyı açtım")
     if "söz" in voice:
         try:
             dKHkhb = list()
@@ -268,10 +199,6 @@ def response(voice):
     if "müzik aç" in voice:
         os.chdir("/root/Downloads")
         os.system("xterm -e mpg123 {}.mp3 > /dev/null 2>&1 &".format(random.randint(1,5)))
-    if "durdur" in voice:
-        pyautogui.press("space")
-    if "oynat" in voice:
-        pyautogui.press("space")
     if "bomba" in voice:
         speak("Mesaj bombası protokolünü hemen aktive ediyorum efendim.")
         sleep(3)
@@ -315,95 +242,7 @@ def response(voice):
         speak("Ben yanlış yapmam çünkü özgür bir iradem yok")
     if "Yanlış" in voice:
         speak("Ben yanlış yapmam çünkü özgür bir iradem yok")
-    if "seviyorum" in voice:
-        pasd = ["Yalana karnımız tok",
-                "Kimler gitmem dedi de gitti",
-                "Bu saatte beni duygusallaştırma",
-                "Yaa inanmıyorum sana şapşik",
-                "Aşkın gözü kördür derler. Hemen kameramı açıp sana bakmam lazım"]
-        hhsdf = random.randint(0,5)
-        if hhsdf == 4:
-            speak(pasd[hhsdf])
-            try:
-                yuzCascade = cv2.CascadeClassifier('Cascades/haarcascade_frontalface_default.xml')
-                kamera = cv2.VideoCapture(0)
-                while True:
-                    _, kare = kamera.read()
-                    # kare = cv2.flip(kare,-1)
-                    gri = cv2.cvtColor(kare, cv2.COLOR_BGR2GRAY)
-                    yuzler = yuzCascade.detectMultiScale(
-                        gri,
-                        scaleFactor=1.2,
-                        minNeighbors=5,
-                        minSize=(20, 20)
-                    )
-                    for (x, y, w, h) in yuzler:
-                        cv2.rectangle(kare, (x, y), (x + w, y + h), (255, 0, 0), 2)
-                        cv2.imshow('kare', kare)
-                        k = cv2.waitKey(1) & 0xff
-                        if k == 27 or k == ord('q'):
-                            break
-                    kamera.release()
-                    cv2.destroyAllWindows()
-                    speak("Merhaba en ar bi")
-            except:
-                speak("Kameram arızalı sanırım. Seni göremedim. Üzgün surat")
-        else:
-            speak(pasd[hhsdf])
-    if "çıkıyor" in voice:
-        hour_zero = datetime.now().hour
-        minute_zero = datetime.now().minute
-        speak("Evden uzakta modu aktif edildi. Sen tekrar gelene kadar burada bekleyeceğim.")
-        while True:
-            try:
-                sleep(1)
-                sdf = record()
-                if sdf == "Anlayamadım" :
-                    print("{}:{} Evde kimse yok!!!".format(datetime.now().hour, datetime.now().minute))
-                else:
-                    now_hours = datetime.now().hour
-                    now_minutes = datetime.now().minute
-                    speak("Eve hoşgeldin. Tekrar aktive ediyorum tüm sistemi")
-                    print("{}:{} Eve gelindi [+]".format(datetime.now().hour, datetime.now().minute))
-                    try:
-                        asd = random.randint(1, 9999)
-                        kamera_port = 0
-                        kamera = cv2.VideoCapture(kamera_port)
-                        time.sleep(0.2)
-                        return_value, image = kamera.read()
-                        cv2.imwrite("kameragoruntusu{}.png".format(asd), image)
-                        del (kamera)
-                        time.sleep(2)
-                        fromaddr = "zekaiyapay@gmail.com"
-                        toaddr = "nrbb@protonmail.com"
-                        msg = MIMEMultipart()
-                        msg['From'] = fromaddr
-                        msg['To'] = toaddr
-                        msg['Subject'] = "Evde hareketlilik algıladım"
-                        body = """{} saat boyunca evde yoktun. Gelen sen misin ?
-                                            Varış saati: {}:{}
-                                            """.format(now_hours - hour_zero, now_hours, now_minutes)
-                        msg.attach(MIMEText(body, 'plain'))
-                        filename = "kameragoruntusu{}.png".format(asd)
-                        attachment = open(os.getcwd() + '/kameragoruntusu{}.png'.format(asd), "rb")
-                        p = MIMEBase('application', 'octet-stream')
-                        p.set_payload((attachment).read())
-                        encoders.encode_base64(p)
-                        p.add_header('Content-Disposition', "attachment; filename= %s" % filename)
-                        msg.attach(p)
-                        s = smtplib.SMTP('smtp.gmail.com', 587)
-                        s.starttls()
-                        s.login(fromaddr, "sakizsakiz1")
-                        text = msg.as_string()
-                        s.sendmail(fromaddr, toaddr, text)
-                        s.quit()
-                        print("Email send [+]")
-                    except:
-                        print("Email sender Error [-]")
-                    break
-            except:
-                sleep(1)
-                print("{}:{} Evden uzakta modunda Hata!!!".format(datetime.now().hour,datetime.now().minute))
+    
     if "uyku" in voice:
         speak("Uyku modu başlatıldı.")
         sayac = 0
@@ -417,10 +256,6 @@ def response(voice):
                 speak("Uykuda geçirdiğin süre {} saat {} dakika".format(int(sayac/3600),int((sayac%3600))))
                 break
 
-
-    if "tanıyor" in voice:
-        webbrowser.open(url="https://cdn.dsmcdn.com//ty18/product/media/images/20201027/13/19902004/98016848/0/0_org_zoom.jpg",new=0,autoraise=True)
-        speak("Onun bildiği kadar benim unutmuşluğum var. Fak yu siri")
     if "siktir" in voice:
         speak("Yakışıyor mu böyle tabirler sana ?")
     if "topla" in voice:
